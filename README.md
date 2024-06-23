@@ -1,49 +1,95 @@
+package candidatura;
 
-## Controle de Fluxo - Desafio - DIO
-- projeto para entregar
-##
+import java.util.Random;
 
-| Desafio de código | Controle de Fluxo |
-|--|--|
-| Módulo | Criando Um Pequeno Sistema Para Validação de Processo Seletivo |
-| Com | Gleyson Sampaio |
-| Bootcamp | Santander Bootcamp 2023 - Fullstack Java+Angular |
-| Plataforma | DIO |
+public class ProcessoSeletivo {
+    public static void main(String[] args) {
+        System.out.println("Processo seletivo");
 
+        analisarCandidato(1400.0);
+        analisarCandidato(2200.0);
+        analisarCandidato(2000.0);
 
-<br>
-Estudo de Java.
+        System.out.println("\n-- Seleção de candidatos --");
+        selecaoCandidatos();
 
-<br>
+        System.out.println("\n-- Imprimir Selecionados --");
+        imprimirSelecionados();
 
-#### Descrição
-Vamos exercitar todo o conteúdo apresentado no módulo de Controle de Fluxo codificando o seguinte cenário.
+        String[] candidatos = {"Maria", "João", "Ana", "Pedro", "Clara", "Lucas", "Isabella", "Bruno", "Carolina", "Gustavo"};
+        for (String candidato : candidatos) {
+            entrandoEmContato(candidato);
+        }
+    }
 
-O sistema deverá receber dois parâmetros via terminal que representarão dois números inteiros, com estes dois números você deverá obter a quantidade de interações (for) e realizar a impressão no console (System.out.print) dos números incrementados, exemplo:
+    static void analisarCandidato(double salarioPretendido) {
+        double salarioBase = 2000.0;
+        if (salarioBase > salarioPretendido) {
+            System.out.println("LIGAR PARA O CANDIDATO");
+        } else if (salarioBase == salarioPretendido) {
+            System.out.println("LIGAR PARA O CANDIDATO COM CONTRAPROPOSTA");
+        } else {
+            System.out.println("AGUARDANDO DEMAIS CANDIDATOS");
+        }
+    }
 
-Se você passar os números 12 e 30, logo teremos uma interação (for) com 18 ocorrências para imprimir os números, exemplo: "Imprimindo o número 1", "Imprimindo o número 2" e assim por diante.
-Se o primeiro parâmetro for MAIOR que o segundo parâmetro, você deverá lançar a exceção customizada chamada de ParametrosInvalidosException com a segunda mensagem: "O segundo parâmetro deve ser maior que o primeiro"
-Crie o projeto DesafioControleFluxo
-Dentro do projeto, crie a classe Contador.java para realizar toda a codificação do nosso programa.
-Dentro do projeto, crie a classe ParametrosInvalidosException que representará a exceção de negócio no sistema.
+    static void selecaoCandidatos() {
+        String[] candidatos = {"Maria", "João", "Ana", "Pedro", "Clara", "Lucas", "Isabella", "Bruno", "Carolina", "Gustavo"};
+        int candidatosSelecionados = 0;
+        int candidatosAtual = 0;
+        double salarioBase = 2000.0;
 
-<br>
+        while (candidatosSelecionados < 5 && candidatosAtual < candidatos.length) {
+            String candidato = candidatos[candidatosAtual];
+            double salarioPretendido = valorPretendido();
 
+            System.out.println("Candidato: " + candidato + " - valor: " + salarioPretendido);
 
-Localização do desafio:
-```
-├── src
-│   ├── contador
-|  
-```
+            if (salarioBase >= salarioPretendido) {
+                System.out.println(candidato + " selecionado para a vaga!");
+                candidatosSelecionados++;
+            }
 
-<br>
+            candidatosAtual++;
+        }
+    }
 
-##
-### Tecnologias utilizadas:
+    static double valorPretendido() {
+        return ThreadLocalRandom.current().nextDouble(1500, 2500);
+    }
 
-<div>
-  <img align="center" alt="diva-Java" height="30" width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg">
-</div>
+    static void imprimirSelecionados() {
+        String[] candidatos = {"Maria", "João", "Ana", "Pedro", "Clara", "Lucas", "Isabella", "Bruno", "Carolina", "Gustavo"};
+        System.out.println("Imprimindo a lista de candidatos de acordo com o índice");
 
+        for (int i = 0; i < candidatos.length; i++) {
+            System.out.println("O candidato de número " + (i + 1) + " é " + candidatos[i]);
+        }
+    }
 
+    static boolean atender() {
+        return new Random().nextInt(3) == 1;
+    }
+
+    static void entrandoEmContato(String candidato) {
+        int tentativasRealizadas = 1;
+        boolean continuaTentando = true;
+        boolean atendeu = false;
+
+        do {
+            atendeu = atender();
+            continuaTentando = !atendeu;
+            if (continuaTentando) {
+                tentativasRealizadas++;
+            } else {
+                System.out.println("Contato realizado com sucesso!");
+            }
+        } while (continuaTentando && tentativasRealizadas < 3);
+
+        if (atendeu) {
+            System.out.println("Conseguimos o contato com " + candidato + " com " + tentativasRealizadas + " tentativas!");
+        } else {
+            System.out.println("NÃO conseguimos o contato com " + candidato + " com " + tentativasRealizadas + " tentativas!");
+        }
+    }
+}
